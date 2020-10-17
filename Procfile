@@ -1,0 +1,1 @@
+web: gunicorn AyurtantraMobile_Project.wsgi --log-file -
