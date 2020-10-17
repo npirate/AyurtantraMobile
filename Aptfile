@@ -1,11 +1,4 @@
-django==2.2
-gunicorn
-setuptools
 unixodbc
 unixodbc-dev
 python-pyodbc
 libsqliteodbc
-django-allauth
-django-mssql-backend
-djangorestframework
-dj-rest-auth
