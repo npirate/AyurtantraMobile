@@ -1,3 +1,6 @@
+curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
+msodbcsql17
+mssql-tools
 unixodbc
 unixodbc-dev
 python-pyodbc
