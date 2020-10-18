@@ -92,7 +92,8 @@ DATABASES = {
         'USER': 'sa',
         'PASSWORD': '12345678',
         'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
+            #'driver': 'ODBC Driver 17 for SQL Server',
+            'driver': 'FreeTDS',
             'unicode_results':True,
         }
     },
