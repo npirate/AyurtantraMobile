@@ -20,10 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '9!umpnkjt3!1@^+r*dfofh+6p52%#s&t!(8bzl3$uz4e#0dggn'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get('DEBUG', default=1))
 
 ALLOWED_HOSTS = ['*']
 
@@ -86,14 +86,14 @@ WSGI_APPLICATION = 'AyurtantraMobile_Project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'AyurDB',
-        'HOST': r'LTP232\SQLEXPRESS',
+        'NAME': os.environ.get('DB_NAME'),
+        'HOST': os.environ.get('DB_HOST'),
         'PORT': '',
-        'USER': 'sa',
-        'PASSWORD': '12345678',
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
         'OPTIONS': {
-            #'driver': 'ODBC Driver 17 for SQL Server',
-            'driver': 'FreeTDS',
+            'driver': 'ODBC Driver 17 for SQL Server',
+            #'driver': 'FreeTDS',
             'unicode_results':True,
         }
     },

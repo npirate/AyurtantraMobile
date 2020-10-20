@@ -1,6 +1,0 @@
-django==2.2
-gunicorn
-django-mssql-backend
-django-allauth
-djangorestframework
-dj-rest-auth
