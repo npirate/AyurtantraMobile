@@ -10,6 +10,8 @@ services:
             - DB_NAME=AyurDB            
             - DB_USER=sadmin
             - DB_PASSWORD=Niramaya!23
+            - EMAIL_HOST_USER =ayurtantra.llc@gmail.com
+            - EMAIL_HOST_PASSWORD=Giminulot143
         volumes:
             - .:/code
         ports:
