@@ -4,6 +4,7 @@ services:
         build: .
         command: python /code/manage.py runserver 0.0.0.0:8000
         environment: 
+            - ENVIRONMENT=dev
             - SECRET_KEY=9!umpnkjt3!1@^+r*dfofh+6p52%#s&t!(8bzl3$uz4e#0dggn
             - DEBUG=1
             - DB_HOST=ayurtantra.database.windows.net
