@@ -12,6 +12,7 @@ djangorestframework = "*"
 django-mssql-backend = "*"
 django-allauth = "*"
 dj-rest-auth = "*"
+whitenoise = "*"
 
 [requires]
 python_version = "3.7"
