@@ -19,9 +19,9 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    path('dj-rest-auth/', include('dj_rest_auth.urls')),
-    path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
-    #path('accounts/', include('django.contrib.auth.urls')), # Django's User management
+    path('rest-auth/', include('dj_rest_auth.urls')),
+    path('rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('', include('django.contrib.auth.urls')), # Django's User management
     #path('accounts/', include('users.urls')), # user signup url when using Django's user management
     path('accounts/', include('allauth.urls')), # all-auth's user management
     path('', include('homepage.urls')), #homepage
