@@ -19,9 +19,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ.get('DEBUG', default=1))
 
@@ -85,6 +82,9 @@ WSGI_APPLICATION = 'AyurtantraMobile_Project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
@@ -101,6 +101,8 @@ DATABASES = {
     },
 
 }
+
+
 
 
 # Password validation
@@ -150,6 +152,8 @@ LOGOUT_REDIRECT_URL = 'home'
 #django-allauth config
 SITE_ID = 1
 
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+
 ACCOUNT_USERNAME_REQUIRED = False
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
@@ -160,11 +164,17 @@ ACCOUNT_EMAIL_REQUIRED = True
 
 ACCOUNT_UNIQUE_EMAIL = True
 
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+
 ACCOUNT_SESSION_REMEMBER = True #will always remember password untill session times-out
 
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 
 ACCOUNT_LOGOUT_REDIRECT = 'home' #over-rides LOGOUT_REDIRECT_URL
+
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'home'
+
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'home'
 
 AUTHENTICATION_BACKENDS = (
 'django.contrib.auth.backends.ModelBackend',
