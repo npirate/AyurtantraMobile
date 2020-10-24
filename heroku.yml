@@ -4,7 +4,8 @@ build:
 
 release:
     image: web
-    #command:
+    command:
+        - python manage.py collectstatic --noinput
     #    - python manage.py migrate
 
 run:
