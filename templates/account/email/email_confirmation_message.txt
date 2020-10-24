@@ -1,9 +1,9 @@
 {% load i18n %}
-{% load account %}{% confirmation.email_address.email as email %}
+{% load account %}
 {% autoescape off %}
-{% blocktrans %} Hello from {{ current_site.name }}!
+{% blocktrans %} Hello from Ayurtantra.
 
-You're receiving this e-mail because user {{ email }} is registering on Ayurtantra LLP.
+You're receiving this e-mail since you are trying to registering on Ayurtantra.
 
 Please confirm this request by going to {{ activate_url }}
 

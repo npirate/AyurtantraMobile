@@ -22,7 +22,8 @@ urlpatterns = [
     path('rest-auth/', include('dj_rest_auth.urls')),
     path('rest-auth/registration/', include('dj_rest_auth.registration.urls')),
     path('', include('django.contrib.auth.urls')), # Django's User management
-    #path('accounts/', include('users.urls')), # user signup url when using Django's user management
+    #path('acokerccounts/', include('users.urls')), # user signup url when using Django's user management
     path('accounts/', include('allauth.urls')), # all-auth's user management
     path('', include('homepage.urls')), #homepage
+    #path('password-reset/<uidb64>/<token>/', include('users.urls')),
 ]
