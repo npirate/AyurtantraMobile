@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'dj_rest_auth',
     'dj_rest_auth.registration',
     'corsheaders',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -141,6 +142,9 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
 # Static files (CSS, JavaScript, Images)
