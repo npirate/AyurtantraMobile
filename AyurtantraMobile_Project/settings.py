@@ -172,6 +172,8 @@ SITE_ID = 1
 
 ACCOUNT_USERNAME_REQUIRED = False
 
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 ACCOUNT_EMAIL_VERIFICATION  = 'mandatory'
@@ -218,7 +220,7 @@ REST_AUTH_SERIALIZERS = {
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
+        #'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
