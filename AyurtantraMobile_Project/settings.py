@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
     'corsheaders',
     'crispy_forms',
+    'patients.apps.PatientsConfig',
 ]
 
 MIDDLEWARE = [

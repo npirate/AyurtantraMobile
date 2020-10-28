@@ -29,6 +29,7 @@ urlpatterns = [
     #path('accounts/', include('users.urls')), # user signup url when using Django's user management
     path('docs/', include_docs_urls(title='Mobile API')),
     path('schema/', schema_view),
+    path('',include('patients.urls')),
     path('', include('django.contrib.auth.urls')), # Django's User management
     path('', include('homepage.urls')), #homepage
 ]
