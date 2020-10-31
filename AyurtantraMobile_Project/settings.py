@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'crispy_forms',
     'patients.apps.PatientsConfig',
+    'pts_app.apps.PtsAppConfig',
 ]
 
 MIDDLEWARE = [

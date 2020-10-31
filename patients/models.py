@@ -2,10 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-from django.db import models
-
-# Create your models here.
-
 class SPManager (models.Manager):
     def __init__(self, SPName):
         self.name = SPName
@@ -52,12 +48,15 @@ class SPManager (models.Manager):
             param_key.clear()
             param_value.clear()            
 
-            result_list = []            
-            keys = [col[0] for col in cursor.description]        
-            for row in cursor.fetchall():
-                result_list.append(dict(zip(keys,row)))
+            result_list = []
+            try:
+                keys = [col[0] for col in cursor.description]        
+                for row in cursor.fetchall():
+                    result_list.append(dict(zip(keys,row)))
+            except:
+                result_list = [{"Results":"No Results Returned"}]
 
-            if len(result_list) == 0 :
+            if len(result_list) == 0:
                 result_list = [{"Results":"No Results Found"}]
         
         return result_list
@@ -75,3 +74,6 @@ class search_doctor_sp (models.Model):
 
 class doctor_details_by_username_sp (models.Model):
     objects = SPManager('GetProfileDataByUser')
+
+class add_bookings_sp (models.Model):
+    objects = SPManager('InsertBookings')

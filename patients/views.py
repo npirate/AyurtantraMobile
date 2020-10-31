@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import search_doctor_sp, doctor_details_by_username_sp
+from .models import search_doctor_sp, doctor_details_by_username_sp, add_bookings_sp
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -30,3 +30,10 @@ class Doctor_Details_By_Username_API (APIView):
 
     def post (self, request, format=None):
         return Response( data='POST method is now allowed', status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+class Add_Bookings_API (APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post (self, request, format=None):
+        sp_params = request.data
+        return Response (add_bookings_sp.objects.sql(sp_params))
