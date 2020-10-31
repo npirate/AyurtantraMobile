@@ -71,9 +71,32 @@ class search_doctor_sp (models.Model):
     #Mob = models.CharField(max_length=25)
     #count = models.IntegerField()
     objects = SPManager('SearchDoctor')
+    class Meta:
+        managed = False #ensures that table is not created / modified by Django    
 
 class doctor_details_by_username_sp (models.Model):
     objects = SPManager('GetProfileDataByUser')
+    class Meta:
+        managed = False
 
 class add_bookings_sp (models.Model):
     objects = SPManager('InsertBookings')
+    class Meta:
+        managed = False
+
+class Bookings(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
+    userid = models.IntegerField()
+    username = models.CharField(max_length=15)
+    caller_fname = models.CharField(db_column='caller_Fname', max_length=25, blank=True, null=True)  # Field name made lowercase.
+    caller_lname = models.CharField(db_column='caller_Lname', max_length=25, blank=True, null=True)  # Field name made lowercase.
+    caller_mob = models.CharField(db_column='caller_Mob', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    book_date = models.DateField(db_column='Book_date', blank=True, null=True)  # Field name made lowercase.
+    book_timeslot = models.TimeField(db_column='Book_timeslot', blank=True, null=True)  # Field name made lowercase.
+    createddatetime = models.DateTimeField(db_column='createdDatetime', blank=True, null=True)  # Field name made lowercase.
+    isactive = models.BooleanField(blank=True, null=True)
+    patientid = models.IntegerField(db_column='PatientID', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'Bookings'
