@@ -9,10 +9,10 @@ from rest_framework.authtoken.models import Token
 
 # definig a function that can be used in all classes
    
-def get_userid (in_token):
+def mob_userid (in_token):
     t = Token.objects.get(key=in_token[6:])
-    patient_id = t.user_id
-    return patient_id
+    x = t.user_id
+    return x
 
 # Create your views here.
 
@@ -37,11 +37,11 @@ class Doctor_Details_By_Username_API (APIView):
             sp_params['get_count'] = 1
         return Response (doctor_details_by_username_sp.objects.sql(sp_params))
 
-    def post (self, request, format=None):
-        return Response( data='POST method is now allowed', status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    #def post (self, request, format=None):
+        #return Response( data='POST method is now allowed', status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 class Add_Bookings_API (APIView):
-    permission_classes = [permissions.AllowAny]
+    #permission_classes = [permissions.AllowAny]
 
     def post (self, request, format=None):
         sp_params = request.data
@@ -52,11 +52,25 @@ class Patient_Bookings_API (APIView):
     def get (self, request, format=None):
         in_token = request.META.get('HTTP_AUTHORIZATION')
         #print (in_token[6:])
-        #userid = get_userid(in_token[6:])
-        #print (userid)
-        #data = request.data
-        bookings_qs = Bookings.objects.filter(patientid=get_userid(in_token),isactive=1).order_by('-book_date')
-        print ('objects is found')
+        
+        data = request.data
+        #print (data)
+        start_date, end_date = '',''
+        if data.get('start_date') is None or data.get('start_date') == '':
+            start_date = '1900-01-01'
+        else:
+            start_date = data.get('start_date')
+
+        #print (start_date)
+        
+        if data.get('end_date') is None or data.get('end_date') == '':
+            end_date = '9999-12-31'
+        else:
+            end_date = data.get('end_date')       
+        #print (end_date)
+
+        bookings_qs = Bookings.objects.filter(patientid=mob_userid(in_token),isactive=1,book_date__gte=start_date, book_date__lte=end_date).order_by('-book_date')
+
         serializer = BookingsSerializer(bookings_qs, many = True)
         return Response(serializer.data)
 

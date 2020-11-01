@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.schemas import get_schema_view
 from rest_framework.documentation import include_docs_urls
+from rest_framework.permissions import AllowAny
 
 schema_view = get_schema_view(title='Mobile API')
 
@@ -27,7 +28,7 @@ urlpatterns = [
     path('rest-auth/registration/', include('dj_rest_auth.registration.urls')),
     path('accounts/', include('allauth.urls')), # all-auth's user management
     #path('accounts/', include('users.urls')), # user signup url when using Django's user management
-    path('docs/', include_docs_urls(title='Mobile API')),
+    path('docs/', include_docs_urls(title='Mobile API', permission_classes=[AllowAny])),
     path('schema/', schema_view),
     path('',include('pts_app.urls')),
     path('',include('patients.urls')),
