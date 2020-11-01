@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework import status
+from patients.views import mob_userid
 
 # Create your views here.
 
@@ -12,8 +13,9 @@ class MyDoctor_API (APIView):
     permission_classes = [permissions.AllowAny]
 
     def get (self, request, format=None):
-        data = request.data
-        doctor_qs = DoctorPatientAssociation.objects.filter(patient_id=data.get('patient_id'),status=data.get('status'))
+        in_token = request.META.get('HTTP_AUTHORIZATION')
+        #data = request.data
+        doctor_qs = DoctorPatientAssociation.objects.filter(patient_id=mob_userid(in_token))
         serializer = DoctorPatientAssociationSerializer(doctor_qs,many=True)
         return Response(serializer.data)
 
@@ -25,8 +27,9 @@ class MyDoctor_API (APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put (self, request, format=None):
+        in_token = request.META.get('HTTP_AUTHORIZATION')
         data = request.data
-        association_qs = DoctorPatientAssociation.objects.filter(patient_id=data.get('patient_id'),doctor_id=data.get('doctor_id')).first() #.first() here is like select top 1
+        association_qs = DoctorPatientAssociation.objects.filter(patient_id=mob_userid(in_token),doctor_id=data.get('doctor_id')).first() #.first() here is like select top 1
         serializer = DoctorPatientAssociationSerializer(association_qs,data=data)
         if serializer.is_valid():
             serializer.save()
