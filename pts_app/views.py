@@ -20,6 +20,9 @@ class MyDoctor_API (APIView):
         return Response(serializer.data)
 
     def post (self, request, format=None):
+        in_token = request.META.get('HTTP_AUTHORIZATION')
+        data = request.data
+        data['patient_id'] = mob_userid(in_token)
         serializer = DoctorPatientAssociationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -29,6 +32,7 @@ class MyDoctor_API (APIView):
     def put (self, request, format=None):
         in_token = request.META.get('HTTP_AUTHORIZATION')
         data = request.data
+        data['patient_id'] = mob_userid(in_token)
         association_qs = DoctorPatientAssociation.objects.filter(patient_id=mob_userid(in_token),doctor_id=data.get('doctor_id')).first() #.first() here is like select top 1
         serializer = DoctorPatientAssociationSerializer(association_qs,data=data)
         if serializer.is_valid():

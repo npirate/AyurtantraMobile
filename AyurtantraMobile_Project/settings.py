@@ -174,7 +174,7 @@ SITE_ID = 1
 
 ACCOUNT_USERNAME_REQUIRED = False
 
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+#ACCOUNT_USER_MODEL_USERNAME_FIELD = None #gives Cannot insert duplicate key in object 'dbo.users_customuser' when trying to register user 
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 

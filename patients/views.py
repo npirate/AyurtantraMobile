@@ -25,8 +25,8 @@ class Search_Doctor_API (APIView):
             sp_params['get_count'] = 1
         return Response (search_doctor_sp.objects.sql(sp_params))
 
-    def post (self, request, format=None):
-        return Response( data='POST method is now allowed', status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    #def post (self, request, format=None):
+        #return Response( data='POST method is now allowed', status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 class Doctor_Details_By_Username_API (APIView):
     #permission_classes = [permissions.AllowAny]
