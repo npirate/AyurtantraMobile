@@ -9,10 +9,12 @@ from rest_framework.authtoken.models import Token
 
 # definig a function that can be used in all classes
    
-def mob_userid (in_token):
+def mob_userid (meta_data):
+    in_token = meta_data.get('HTTP_AUTHORIZATION')
     t = Token.objects.get(key=in_token[6:])
-    x = t.user_id
-    return x
+    y = t.user_id
+    return y
+    
 
 # Create your views here.
 
@@ -33,6 +35,7 @@ class Doctor_Details_By_Username_API (APIView):
 
     def get (self, request, format=None):
         sp_params = request.data
+        print(sp_params, " - This in input JSON")
         if sp_params.get('get_count') is None or sp_params.get('get_count') == '':
             sp_params['get_count'] = 1
         return Response (doctor_details_by_username_sp.objects.sql(sp_params))
@@ -50,9 +53,6 @@ class Add_Bookings_API (APIView):
 class Patient_Bookings_API (APIView):
 
     def get (self, request, format=None):
-        in_token = request.META.get('HTTP_AUTHORIZATION')
-        #print (in_token[6:])
-        
         data = request.data
         #print (data)
         start_date, end_date = '',''
@@ -60,7 +60,6 @@ class Patient_Bookings_API (APIView):
             start_date = '1900-01-01'
         else:
             start_date = data.get('start_date')
-
         #print (start_date)
         
         if data.get('end_date') is None or data.get('end_date') == '':
@@ -69,7 +68,7 @@ class Patient_Bookings_API (APIView):
             end_date = data.get('end_date')       
         #print (end_date)
 
-        bookings_qs = Bookings.objects.filter(patientid=mob_userid(in_token),isactive=1,book_date__gte=start_date, book_date__lte=end_date).order_by('-book_date')
+        bookings_qs = Bookings.objects.filter(patientid=mob_userid(request.META),isactive=1,book_date__gte=start_date, book_date__lte=end_date).order_by('-book_date')
 
         serializer = BookingsSerializer(bookings_qs, many = True)
         return Response(serializer.data)
