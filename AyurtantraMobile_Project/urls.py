@@ -22,16 +22,16 @@ from rest_framework.permissions import AllowAny
 schema_view = get_schema_view(title='Mobile API')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
-    path('rest-auth/', include('dj_rest_auth.urls')),
-    path('rest-auth/registration/', include('dj_rest_auth.registration.urls')),
-    path('accounts/', include('allauth.urls')), # all-auth's user management
+    path('app/admin/', admin.site.urls),
+    path('app/api-auth/', include('rest_framework.urls')),
+    path('app/rest-auth/', include('dj_rest_auth.urls')),
+    path('app/rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('app/accounts/', include('allauth.urls')), # all-auth's user management
     #path('accounts/', include('users.urls')), # user signup url when using Django's user management
-    path('docs/', include_docs_urls(title='Mobile API', permission_classes=[AllowAny])),
-    path('schema/', schema_view),
-    path('',include('pts_app.urls')),
-    path('',include('patients.urls')),
-    path('', include('django.contrib.auth.urls')), # Django's User management
-    path('', include('homepage.urls')), #homepage
+    path('app/docs/', include_docs_urls(title='Mobile API', permission_classes=[AllowAny])),
+    path('app/schema/', schema_view),
+    path('app/',include('pts_app.urls')),
+    path('app/',include('patients.urls')),
+    path('app/', include('django.contrib.auth.urls')), # Django's User management
+    path('app/', include('homepage.urls')), #homepage
 ]
