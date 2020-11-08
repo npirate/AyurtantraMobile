@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'AyurtantraMobile_Project.wsgi.application'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
-print (SECRET_KEY, 'is the key i got from the docker-compose')
+#print (SECRET_KEY, 'is the key i got from the docker-compose')
 
 DATABASES = {
     'default': {
@@ -232,7 +232,7 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
 
-if os.environ.get('DJANGO_DEVELOPMENT') != 'prod' or is None:
+if os.environ.get('DJANGO_DEVELOPMENT') != 'prod' or os.environ.get('DJANGO_DEVELOPMENT') is None:
     #print ('value of dev environment is ',os.environ.get('DJANGO_DEVELOPMENT'))
     from .settingsdev import SECRET_KEY, DATABASES, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
 else:

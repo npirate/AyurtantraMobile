@@ -10,7 +10,7 @@ from patients.views import mob_userid
 # Create your views here.
 
 class MyDoctor_API (APIView):
-    permission_classes = [permissions.AllowAny]
+    #permission_classes = [permissions.AllowAny]
 
     def get (self, request, format=None):
         doctor_qs = DoctorPatientAssociation.objects.filter(patient_id=mob_userid(request.META))
