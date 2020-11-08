@@ -49,14 +49,16 @@ class Add_Bookings_API (APIView):
 
     def post (self, request, format=None):
         sp_params = request.data
+        sp_params['PatientID'] = mob_userid(request.META) #adding key-value pair
         return Response (add_bookings_sp.objects.sql(sp_params))
 
 class Patient_Bookings_API (APIView):
+    #permission_classes = [permissions.AllowAny]
 
     def get (self, request, format=None):
         #data = request.data
-        #print (data)
         data = request.query_params.dict()
+        #print (data)
         start_date, end_date = '',''
         if data.get('start_date') is None or data.get('start_date') == '':
             start_date = '1900-01-01'
