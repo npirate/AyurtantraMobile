@@ -21,9 +21,9 @@ def mob_userid (meta_data):
 class Search_Doctor_API (APIView):
     #permission_classes = [permissions.AllowAny]
 
-    def get (self, request, format=None):
-        #sp_params = request.data #if sending parameters in JSON body
-        sp_params = request.query_params.dict() #if sending parameters in url as query string
+    def post (self, request, format=None):
+        sp_params = request.data #if sending parameters in JSON body
+        #sp_params = request.query_params.dict() #if sending parameters in url as query string
         if sp_params.get('get_count') is None or sp_params.get('get_count') == '':
             sp_params['get_count'] = 1
         return Response (search_doctor_sp.objects.sql(sp_params))
@@ -34,9 +34,8 @@ class Search_Doctor_API (APIView):
 class Doctor_Details_By_Username_API (APIView):
     #permission_classes = [permissions.AllowAny]
 
-    def get (self, request, format=None):
-        #sp_params = request.data
-        sp_params = request.query_params.dict()
+    def post (self, request, format=None):
+        sp_params = request.data
         if sp_params.get('get_count') is None or sp_params.get('get_count') == '':
             sp_params['get_count'] = 1
         return Response (doctor_details_by_username_sp.objects.sql(sp_params))
@@ -55,10 +54,8 @@ class Add_Bookings_API (APIView):
 class Patient_Bookings_API (APIView):
     #permission_classes = [permissions.AllowAny]
 
-    def get (self, request, format=None):
-        #data = request.data
-        data = request.query_params.dict()
-        #print (data)
+    def post (self, request, format=None):
+        data = request.data
         start_date, end_date = '',''
         if data.get('start_date') is None or data.get('start_date') == '':
             start_date = '1900-01-01'
