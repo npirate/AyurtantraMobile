@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import DoctorPatientAssociation
-from .serializers import DoctorPatientAssociationSerializer
+from .serializers import DoctorPatientGetSerializer, DoctorPatientPostSerializer
 from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework.response import Response
@@ -13,8 +13,8 @@ class MyDoctor_API (APIView):
     #permission_classes = [permissions.AllowAny]
 
     def get (self, request, format=None):
-        doctor_qs = DoctorPatientAssociation.objects.filter(patient_id=mob_userid(request.META))
-        serializer = DoctorPatientAssociationSerializer(doctor_qs,many=True)
+        doctor_qs = DoctorPatientAssociation.objects.filter(patient_id=mob_userid(request.META)).select_related('doctor_id')
+        serializer = DoctorPatientGetSerializer(doctor_qs,many=True)
         return Response(serializer.data)
 
     #def post (self, request, format=None):
@@ -30,7 +30,7 @@ class MyDoctor_API (APIView):
         data = request.data
         data['patient_id'] = mob_userid(request.META)
         association_qs = DoctorPatientAssociation.objects.filter(patient_id=mob_userid(request.META),doctor_id=data.get('doctor_id')).first() #.first() here is like select top 1
-        serializer = DoctorPatientAssociationSerializer(association_qs,data=data)
+        serializer = DoctorPatientPostSerializer(association_qs,data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
