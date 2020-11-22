@@ -84,9 +84,37 @@ class add_bookings_sp (models.Model):
     class Meta:
         managed = False
 
+class DocDetail(models.Model):
+    userid = models.IntegerField(primary_key=True)
+    username = models.CharField(max_length=15)
+    doc_fname = models.CharField(db_column='doc_Fname', max_length=25)  # Field name made lowercase.
+    doc_mname = models.CharField(db_column='doc_Mname', max_length=25, blank=True, null=True)  # Field name made lowercase.
+    doc_lname = models.CharField(db_column='doc_Lname', max_length=25, blank=True, null=True)  # Field name made lowercase.
+    doc_gender = models.CharField(db_column='doc_Gender', max_length=10, blank=True, null=True)  # Field name made lowercase.
+    doc_dob = models.DateField(db_column='doc_DOB')  # Field name made lowercase.
+    doc_graddegree = models.CharField(db_column='doc_GradDegree', max_length=10, blank=True, null=True)  # Field name made lowercase.
+    doc_postgrad = models.CharField(db_column='doc_PostGrad', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    doc_phone = models.CharField(db_column='doc_Phone', max_length=15, blank=True, null=True)  # Field name made lowercase.
+    doc_email = models.CharField(db_column='doc_Email', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    clinic_address1 = models.CharField(max_length=100, blank=True, null=True)
+    clinic_address2 = models.CharField(max_length=100, blank=True, null=True)
+    clinic_city = models.CharField(max_length=25, blank=True, null=True)
+    clinic_state = models.CharField(max_length=25, blank=True, null=True)
+    clinic_pincode = models.CharField(max_length=10, blank=True, null=True)
+    clinic_phone = models.CharField(max_length=20, blank=True, null=True)
+    createddatetime = models.DateTimeField(db_column='createdDatetime', blank=True, null=True)  # Field name made lowercase.
+    modifieddatetime = models.DateTimeField(db_column='modifiedDatetime', blank=True, null=True)  # Field name made lowercase.
+    doc_services = models.CharField(db_column='doc_Services', max_length=1000, blank=True, null=True)  # Field name made lowercase.
+    ispublish = models.BooleanField(blank=True, null=True)
+    doc_clinicname = models.CharField(db_column='doc_Clinicname', max_length=60, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'Doc_Detail'
+
 class Bookings(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    userid = models.IntegerField()
+    userid = models.ForeignKey(DocDetail, null= True, on_delete=models.SET_NULL, db_constraint=False, db_column='userid')
     username = models.CharField(max_length=15)
     caller_fname = models.CharField(db_column='caller_Fname', max_length=25, blank=True, null=True)  # Field name made lowercase.
     caller_lname = models.CharField(db_column='caller_Lname', max_length=25, blank=True, null=True)  # Field name made lowercase.

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import search_doctor_sp, doctor_details_by_username_sp, add_bookings_sp, Bookings
-from .serializers import BookingsSerializer
+from .serializers import BookingsSerializer, DocDetailSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -19,11 +19,18 @@ def mob_userid (meta_data):
 # Create your views here.
 
 class Search_Doctor_API (APIView):
-    #permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.AllowAny]
 
     def post (self, request, format=None):
         sp_params = request.data #if sending parameters in JSON body
         #sp_params = request.query_params.dict() #if sending parameters in url as query string
+        if sp_params.get('get_count') is None or sp_params.get('get_count') == '':
+            sp_params['get_count'] = 1
+        return Response (search_doctor_sp.objects.sql(sp_params))
+
+    def get (self, request, format=None):
+        #sp_params = request.data #if sending parameters in JSON body
+        sp_params = request.query_params.dict() #if sending parameters in url as query string
         if sp_params.get('get_count') is None or sp_params.get('get_count') == '':
             sp_params['get_count'] = 1
         return Response (search_doctor_sp.objects.sql(sp_params))
@@ -69,9 +76,18 @@ class Patient_Bookings_API (APIView):
             end_date = data.get('end_date')       
         #print (end_date)
 
-        bookings_qs = Bookings.objects.filter(patientid=mob_userid(request.META),isactive=1,book_date__gte=start_date, book_date__lte=end_date).order_by('-book_date')
+        #bookings_qs = Bookings.objects.select_related('userid').all()
+
+        bookings_qs = Bookings.objects.select_related('userid').filter(
+        patientid=mob_userid(request.META),
+        isactive=1,
+        book_date__gte=start_date, 
+        book_date__lte=end_date
+        ).order_by('-book_date')
 
         serializer = BookingsSerializer(bookings_qs, many = True)
+
+        #print (serializer, 'is the serialized data')
         return Response(serializer.data)
 
         

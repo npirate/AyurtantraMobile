@@ -17,16 +17,16 @@ class MyDoctor_API (APIView):
         serializer = DoctorPatientAssociationSerializer(doctor_qs,many=True)
         return Response(serializer.data)
 
-    def post (self, request, format=None):
-        data = request.data
-        data['patient_id'] = mob_userid(request.META)
-        serializer = DoctorPatientAssociationSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    #def post (self, request, format=None):
+        #data = request.data
+        #data['patient_id'] = mob_userid(request.META)
+        #serializer = DoctorPatientAssociationSerializer(data=request.data)
+        #if serializer.is_valid():
+            #serializer.save()
+            #return Response(serializer.data, status=status.HTTP_201_CREATED)
+        #return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def put (self, request, format=None):
+    def post (self, request, format=None):
         data = request.data
         data['patient_id'] = mob_userid(request.META)
         association_qs = DoctorPatientAssociation.objects.filter(patient_id=mob_userid(request.META),doctor_id=data.get('doctor_id')).first() #.first() here is like select top 1

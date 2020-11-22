@@ -32,6 +32,7 @@ urlpatterns = [
     path('app/schema/', schema_view),
     path('app/',include('pts_app.urls')),
     path('app/',include('patients.urls')),
+    path('app/',include('dr_app.urls')),
     path('app/', include('django.contrib.auth.urls')), # Django's User management
     path('app/', include('homepage.urls')), #homepage
 ]
