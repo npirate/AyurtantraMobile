@@ -1,4 +1,5 @@
 from django.db import models
+from users.models import CustomUser
 
 # Create your models here.
 
@@ -79,8 +80,8 @@ class doctor_details_by_username_sp (models.Model):
     class Meta:
         managed = False
 
-class add_bookings_sp (models.Model):
-    objects = SPManager('InsertBookings')
+class add_appt_sp (models.Model):
+    objects = SPManager('InsertComplaints')
     class Meta:
         managed = False
 
@@ -112,19 +113,43 @@ class DocDetail(models.Model):
         managed = False
         db_table = 'Doc_Detail'
 
-class Bookings(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    userid = models.ForeignKey(DocDetail, null= True, on_delete=models.SET_NULL, db_constraint=False, db_column='userid')
-    username = models.CharField(max_length=15)
-    caller_fname = models.CharField(db_column='caller_Fname', max_length=25, blank=True, null=True)  # Field name made lowercase.
-    caller_lname = models.CharField(db_column='caller_Lname', max_length=25, blank=True, null=True)  # Field name made lowercase.
-    caller_mob = models.CharField(db_column='caller_Mob', max_length=15, blank=True, null=True)  # Field name made lowercase.
-    book_date = models.DateField(db_column='Book_date', blank=True, null=True)  # Field name made lowercase.
-    book_timeslot = models.TimeField(db_column='Book_timeslot', blank=True, null=True)  # Field name made lowercase.
+
+class PatientDetail(models.Model):
+    patientuid = models.CharField(db_column='PatientUID', primary_key=True, max_length=36)  # Field name made lowercase.
+    fname = models.CharField(db_column='Fname', max_length=25)  # Field name made lowercase.
+    mname = models.CharField(db_column='Mname', max_length=25, blank=True, null=True)  # Field name made lowercase.
+    lname = models.CharField(db_column='Lname', max_length=25, blank=True, null=True)  # Field name made lowercase.
+    gender = models.CharField(db_column='Gender', max_length=10)  # Field name made lowercase.
+    dob = models.DateField(db_column='DOB', blank=True, null=True)  # Field name made lowercase.
+    mob = models.CharField(db_column='Mob', max_length=25, blank=True, null=True)  # Field name made lowercase.
+    pemail = models.CharField(db_column='Pemail', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    address1 = models.CharField(db_column='Address1', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    pincode = models.CharField(max_length=25)
+    city = models.CharField(max_length=25, blank=True, null=True)
+    state = models.CharField(max_length=25, blank=True, null=True)
+    occupation = models.CharField(max_length=25, blank=True, null=True)
     createddatetime = models.DateTimeField(db_column='createdDatetime', blank=True, null=True)  # Field name made lowercase.
-    isactive = models.BooleanField(blank=True, null=True)
-    patientid = models.IntegerField(db_column='PatientID', blank=True, null=True)  # Field name made lowercase.
+    modifieddatetime = models.DateTimeField(db_column='modifiedDatetime', blank=True, null=True)  # Field name made lowercase.
+    username_email = models.CharField(max_length=100, blank=True, null=True)
+    userid = models.ForeignKey(DocDetail, null= True, on_delete=models.SET_NULL, db_constraint=False, db_column='userid')
+    status = models.SmallIntegerField(blank=True, null=True, default=1)
+    objects = models.Manager()
+    add_pt_dr = SPManager('AddPatientDetail')
 
     class Meta:
         managed = False
-        db_table = 'Bookings'
+        db_table = 'Patient_Detail'
+
+class Appointments(models.Model):
+    historyid = models.AutoField(primary_key=True)
+    patientuid = models.ForeignKey(PatientDetail, null = True, on_delete=models.SET_NULL, db_constraint=False, db_column='PatientUID', max_length=36)  # Field name made lowercase.
+    complaint = models.CharField(max_length=3000, blank=True, null=True)
+    createddate = models.DateTimeField(db_column='createdDate', blank=True, null=True)  # Field name made lowercase.
+    modifieddate = models.DateTimeField(db_column='modifiedDate', blank=True, null=True)  # Field name made lowercase.
+    enddate = models.DateTimeField(db_column='endDate', blank=True, null=True)  # Field name made lowercase.
+    status = models.CharField(db_column='Status', max_length=1, blank=True, null=True)  # Field name made lowercase.
+    patientcomplaint = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'complaints'
