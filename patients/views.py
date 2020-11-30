@@ -50,11 +50,12 @@ class Doctor_Details_By_Username_API (APIView):
 
     #def post (self, request, format=None):
         #return Response( data='POST method is now allowed', status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
 class MyDoctor_API (APIView):
     #permission_classes = [permissions.AllowAny]
 
     def get (self, request, format=None):
-        doctor_qs = PatientDetail.objects.filter(pemail=request.user.email).select_related('userid')
+        doctor_qs = PatientDetail.objects.filter(pemail=request.user.email, status=1).select_related('userid')
         serializer = DoctorPatientGetSerializer(doctor_qs,many=True)
         return Response(serializer.data)
 

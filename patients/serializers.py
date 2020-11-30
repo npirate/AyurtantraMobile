@@ -5,7 +5,7 @@ class DocDetailSerializer(serializers.ModelSerializer):
     doc_id = serializers.IntegerField(source='userid')
     class Meta:
         model = DocDetail
-        fields = ['doc_id','doc_fname','doc_lname','doc_phone','doc_email']
+        fields = ['doc_id','username','doc_fname','doc_lname','doc_phone','doc_email']
         #fields = '__all__'
 
 class DoctorPatientGetSerializer(serializers.ModelSerializer):

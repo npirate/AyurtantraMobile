@@ -55,7 +55,7 @@ class SPManager (models.Manager):
                 for row in cursor.fetchall():
                     result_list.append(dict(zip(keys,row)))
             except:
-                result_list = [{"Results":"No Results Returned"}]
+                result_list = [{"Results":"API call is successful."}]
 
             if len(result_list) == 0:
                 result_list = [{"Results":"No Results Found"}]
