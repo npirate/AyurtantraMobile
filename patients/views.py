@@ -55,7 +55,7 @@ class MyDoctor_API (APIView):
     #permission_classes = [permissions.AllowAny]
 
     def get (self, request, format=None):
-        doctor_qs = PatientDetail.objects.filter(pemail=request.user.email, status=1).select_related('userid')
+        doctor_qs = PatientDetail.objects.filter(pemail=request.user.email, status=1, userid__isnull=False).select_related('userid')
         serializer = DoctorPatientGetSerializer(doctor_qs,many=True)
         return Response(serializer.data)
 
@@ -80,6 +80,8 @@ class MyDoctor_API (APIView):
 
     def post (self, request, format=None):
         sp_params = request.data
+        if sp_params.get('email') is None or sp_params.get('email') == '':
+            return Response('email: field is mandatory', status=status.HTTP_428_PRECONDITION_REQUIRED)
         token = request.META.get('HTTP_AUTHORIZATION')[6:]
         u = Token.objects.select_related('user').get(key=token)
         #print (u)
@@ -136,7 +138,7 @@ class Patient_Appointments_API (APIView):
         patientuid__pemail=request.user.email,
         createddate__gte=start_date, 
         createddate__lte=end_date
-        ).order_by('-createddate')
+        ).order_by('-createddate')[:5]
 
         serializer = AppointmentsSerializer(appts_qs, many = True)
 
