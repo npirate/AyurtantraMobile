@@ -138,7 +138,7 @@ class Patient_Appointments_API (APIView):
         patientuid__pemail=request.user.email,
         createddate__gte=start_date, 
         createddate__lte=end_date
-        ).order_by('-createddate')[:5]
+        ).order_by('createddate')[:5]
 
         serializer = AppointmentsSerializer(appts_qs, many = True)
 

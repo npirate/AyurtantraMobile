@@ -62,6 +62,54 @@ class SPManager (models.Manager):
         
         return result_list
 
+    def sp (self, id, data):
+        from django.db import connection 
+
+        with connection.cursor() as cursor:
+            cursor.execute (
+                '''select * from (SELECT p.PARAMETER_NAME, isnull(pl.ptype,99) as ptype 
+                FROM INFORMATION_SCHEMA.PARAMETERS p
+                inner join dr_app_splist s on p.SPECIFIC_NAME = s.spname 
+                left join dr_app_parameterlist pl on pl.parameter = p.PARAMETER_NAME
+                WHERE
+                s.id = %s 
+                and p.PARAMETER_MODE = 'IN' 
+                and ptype <> 99
+                union
+                select spname as PARAMETER_NAME, 1 as ptype from dr_app_splist where id = %s) as a''',
+                [id,id]
+            )
+            
+            for row in cursor.fetchall():
+                if row[1] == 1:
+                    namesp = row[0]
+                elif row[1] == 2 and data.get(row[0].replace('@',''),'') == '':
+                    return [{'Error':'{0} key is mandatory and value cannot be null or blank'.format(row[0].replace('@',''))}]
+                elif row[1] == 3 and data.get(row[0].replace('@','')) is None:
+                    return [{'Error':'{0} key is mandatory and value cannot be null'.format(row[0].replace('@',''))}]
+
+            sql = 'exec {0} '.format(namesp)
+
+            for k, v in data.items():
+                v = "''" if not str(v) else v
+                sql = sql + '@' + str(k) + " = "+ str(v) + ", "
+ 
+            result = []
+
+            cursor.execute(sql[:-2])
+
+            try:
+                keys = [col[0] for col in cursor.description]        
+                for row in cursor.fetchall():
+                    result.append(dict(zip(keys,row)))
+            except:
+                result = [{"Results":"API call is successful."}]
+
+            if len(result) == 0:
+                result = [{"Results":"No Results Found"}]
+       
+        return result
+
 class search_doctor_sp (models.Model):
     #row_no = models.IntegerField()
     #PatientUID = models.CharField(max_length=100)

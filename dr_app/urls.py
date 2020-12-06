@@ -1,6 +1,6 @@
-from django.urls import path
-from .views import Search_Shloka_API
+from django.urls import path, re_path, path
+from .views import Any_SP_API
 
 urlpatterns =[
-    path('search-shloka/',Search_Shloka_API.as_view(),name='search-shloka-url'),
+    re_path(r'^(?P<id>\d+)/',Any_SP_API.as_view(),name='any-sp-api-url'),
 ]
