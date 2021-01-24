@@ -110,8 +110,14 @@ class Add_Appt_API (APIView):
     def post (self, request, format=None):
         sp_params = request.data
         sp_params['PatientUID'] = PatientDetail.objects.values_list('patientuid',flat=True).get(pemail=request.user.email, userid=sp_params.get('dr_id'))
+        
+        #sp_params['status'] = 'N'
+        sp_params['date'], sp_params['time'] = sp_params.get('visitDate').split()
+        sp_params['Patcomplaint'] = sp_params['patientcomplaint']
+
         sp_params.pop('dr_id')
-        sp_params['status'] = 'N'
+        sp_params.pop('visitDate')
+        sp_params.pop('patientcomplaint')
         return Response (add_appt_sp.objects.sql(sp_params))
 
 class Patient_Appointments_API (APIView):
@@ -139,6 +145,8 @@ class Patient_Appointments_API (APIView):
         createddate__gte=start_date, 
         createddate__lte=end_date
         ).order_by('createddate')[:5]
+
+        print (appts_qs.query)
 
         serializer = AppointmentsSerializer(appts_qs, many = True)
 

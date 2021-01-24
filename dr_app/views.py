@@ -18,4 +18,4 @@ class Any_SP_API (APIView):
         #validate your incoming parameter values here. null and blank related validations are handled from db configurations.
         #if sp_params.get('get_count') is None or sp_params.get('get_count') == '':
             #sp_params['get_count'] = 1
-        return Response (SPList.objects.sp(id=self.kwargs['id'],data=sp_params))
+        return Response (SPList.objects.sp(spid=self.kwargs['id'],data=sp_params))

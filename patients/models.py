@@ -62,7 +62,7 @@ class SPManager (models.Manager):
         
         return result_list
 
-    def sp (self, id, data):
+    def sp (self, spid, data):
         from django.db import connection 
 
         with connection.cursor() as cursor:
@@ -72,12 +72,12 @@ class SPManager (models.Manager):
                 inner join dr_app_splist s on p.SPECIFIC_NAME = s.spname 
                 left join dr_app_parameterlist pl on pl.parameter = p.PARAMETER_NAME
                 WHERE
-                s.id = %s 
+                s.spid = %s 
                 and p.PARAMETER_MODE = 'IN' 
                 and ptype <> 99
                 union
-                select spname as PARAMETER_NAME, 1 as ptype from dr_app_splist where id = %s) as a''',
-                [id,id]
+                select spname as PARAMETER_NAME, 1 as ptype from dr_app_splist where spid = %s) as a''',
+                [spid,spid]
             )
             
             for row in cursor.fetchall():
@@ -129,7 +129,7 @@ class doctor_details_by_username_sp (models.Model):
         managed = False
 
 class add_appt_sp (models.Model):
-    objects = SPManager('InsertComplaints')
+    objects = SPManager('AddAppointment')
     class Meta:
         managed = False
 
@@ -188,16 +188,29 @@ class PatientDetail(models.Model):
         managed = False
         db_table = 'Patient_Detail'
 
+# class Appointments(models.Model):
+    # historyid = models.AutoField(primary_key=True)
+    # patientuid = models.ForeignKey(PatientDetail, null = True, on_delete=models.SET_NULL, db_constraint=False, db_column='PatientUID', max_length=36)  # Field name made lowercase.
+    # complaint = models.CharField(max_length=3000, blank=True, null=True)
+    # createddate = models.DateTimeField(db_column='createdDate', blank=True, null=True)  # Field name made lowercase.
+    # modifieddate = models.DateTimeField(db_column='modifiedDate', blank=True, null=True)  # Field name made lowercase.
+    # enddate = models.DateTimeField(db_column='endDate', blank=True, null=True)  # Field name made lowercase.
+    # status = models.CharField(db_column='Status', max_length=1, blank=True, null=True)  # Field name made lowercase.
+    # patientcomplaint = models.CharField(max_length=100, blank=True, null=True)
+
+    # class Meta:
+        # managed = False
+        # db_table = 'complaints'
+
 class Appointments(models.Model):
-    historyid = models.AutoField(primary_key=True)
-    patientuid = models.ForeignKey(PatientDetail, null = True, on_delete=models.SET_NULL, db_constraint=False, db_column='PatientUID', max_length=36)  # Field name made lowercase.
-    complaint = models.CharField(max_length=3000, blank=True, null=True)
-    createddate = models.DateTimeField(db_column='createdDate', blank=True, null=True)  # Field name made lowercase.
-    modifieddate = models.DateTimeField(db_column='modifiedDate', blank=True, null=True)  # Field name made lowercase.
-    enddate = models.DateTimeField(db_column='endDate', blank=True, null=True)  # Field name made lowercase.
-    status = models.CharField(db_column='Status', max_length=1, blank=True, null=True)  # Field name made lowercase.
+    apmtid = models.AutoField(primary_key=True)
     patientcomplaint = models.CharField(max_length=100, blank=True, null=True)
+    createddate = models.DateTimeField(db_column='createdDate', blank=True, null=True)  # Field name made lowercase.
+    patientuid = models.ForeignKey(PatientDetail, null = True, on_delete=models.SET_NULL, db_constraint=False, db_column='PatientUID', max_length=36)  # Field name made lowercase.
+    patfname = models.CharField(db_column='PatFname', max_length=25, blank=True, null=True)  # Field name made lowercase.
+    patlname = models.CharField(db_column='PatLname', max_length=25, blank=True, null=True)  # Field name made lowercase.
+    apmttime = models.TimeField(db_column='apmtTime', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
-        db_table = 'complaints'
+        db_table = 'Appointments'
